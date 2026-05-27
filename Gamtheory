@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -128,8 +129,7 @@
     font-size: 10px;
     width: 18px; height: 18px;
     border-radius: 50%;
-
-background: var(--bg3);
+    background: var(--bg3);
     border: 1px solid var(--border);
     display: inline-flex; align-items: center; justify-content: center;
     flex-shrink: 0;
@@ -270,7 +270,7 @@ background: var(--bg3);
 
   .chart-wrap { position: relative; width: 100%; height: 360px; margin: 1.25rem 0; }
 
-.verdict {
+  .verdict {
     border-radius: 10px;
     padding: 1.25rem 1.5rem;
     margin-top: 1.5rem;
@@ -348,8 +348,7 @@ background: var(--bg3);
           <th></th>
           <th>L₁ Равномерная</th>
           <th>L₂ Пиковая</th>
-
-<th>L₃ Ночная</th>
+          <th>L₃ Ночная</th>
         </tr>
       </thead>
       <tbody>
@@ -450,8 +449,7 @@ background: var(--bg3);
       </thead>
       <tbody>
         <tr><td>Графоаналитический</td><td class="opt">0.375</td><td class="opt">0.625</td><td class="opt">0.375</td><td class="opt">0.625</td><td class="opt">18.5</td></tr>
-
-<tr><td>Симплекс-метод</td><td class="opt">0.375</td><td class="opt">0.625</td><td class="opt">0.375</td><td class="opt">0.625</td><td class="opt">18.5</td></tr>
+        <tr><td>Симплекс-метод</td><td class="opt">0.375</td><td class="opt">0.625</td><td class="opt">0.375</td><td class="opt">0.625</td><td class="opt">18.5</td></tr>
         <tr><td>Браун–Робинсон</td><td style="color:var(--text2)">сходится к 0.375</td><td style="color:var(--text2)">сходится к 0.625</td><td style="color:var(--text2)">0.375</td><td style="color:var(--text2)">0.625</td><td style="color:var(--text2)">18.5</td></tr>
       </tbody>
     </table>
@@ -561,289 +559,4 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 </body>
 </html>
-
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Вариант 47 — Теория игр: Облачные HPC-ресурсы</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Spectral:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
-<style>
-  :root {
-    --bg: #0d1117;
-    --bg2: #161b22;
-    --bg3: #1c2333;
-    --border: #30363d;
-    --border2: #444c56;
-    --text: #e6edf3;
-    --text2: #8b949e;
-    --text3: #6e7681;
-    --accent: #58a6ff;
-    --accent2: #1f6feb;
-    --gold: #d29922;
-    --gold2: #f0c040;
-    --green: #3fb950;
-    --red: #f85149;
-    --purple: #bc8cff;
-    --orange: #e3b341;
-    --teal: #39d353;
-    --cyan: #76e3ea;
-    --r1: #4facde;
-    --r2: #f78166;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: 'IBM Plex Sans', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
-  .header {
-    background: linear-gradient(135deg, #0d1117 0%, #1a1f2e 50%, #0d1117 100%);
-    border-bottom: 1px solid var(--border);
-    padding: 2.5rem 2rem 2rem;
-    position: relative;
-    overflow: hidden;
-  }
-  .header::before {
-    content: '';
-    position: absolute;
-    top: -60px; left: -60px;
-    width: 300px; height: 300px;
-    background: radial-gradient(circle, rgba(88,166,255,0.06) 0%, transparent 70%);
-    pointer-events: none;
-  }
-  .header::after {
-    content: '';
-    position: absolute;
-    bottom: -40px; right: -40px;
-    width: 250px; height: 250px;
-    background: radial-gradient(circle, rgba(210,153,34,0.08) 0%, transparent 70%);
-    pointer-events: none;
-  }
-  .header-tag {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    color: var(--gold);
-    letter-spacing: 0.15em;
-background: var(--bg3);
-    border: 1px solid var(--border);
-    display: inline-flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-  }
-  .nav-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
-  .nav-btn.active .step-num { background: var(--accent2); border-color: var(--accent); color: white; }
-  .nav-btn:hover:not(.active) { color: var(--text); }
-
-  .content { max-width: 920px; margin: 0 auto; padding: 2rem 1.5rem 5rem; }
-  .section { display: none; }
-  .section.active { display: block; }
-
-  .section-title {
-    font-family: 'Spectral', serif;
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: var(--text);
-    margin-bottom: 0.4rem;
-    display: flex; align-items: center; gap: 10px;
-  }
-  .section-title span.num {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
-    color: var(--gold);
-    background: rgba(210,153,34,0.1);
-    border: 1px solid rgba(210,153,34,0.25);
-    padding: 2px 8px;
-    border-radius: 4px;
-  }
-  .section-sub {
-    color: var(--text2);
-    font-size: 0.9rem;
-    margin-bottom: 2rem;
-    line-height: 1.6;
-  }
-
-  .card {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 1.5rem;
-    margin-bottom: 1.25rem;
-  }
-  .card-title {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    color: var(--text3);
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    margin-bottom: 1rem;
-  }
-
-table.matrix {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
-    font-size: 15px;
-  }
-  table.matrix th, table.matrix td {
-    padding: 11px 16px;
-    text-align: center;
-    border: 1px solid var(--border);
-  }
-  table.matrix th {
-    background: var(--bg3);
-    color: var(--text2);
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
-    font-weight: 600;
-  }
-  table.matrix td {
-    color: var(--text);
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 16px;
-    transition: background 0.2s;
-  }
-  table.matrix td:first-child {
-    text-align: left;
-    font-size: 13px;
-    color: var(--text2);
-    background: var(--bg3);
-  }
-
-  .cell-hi { background: rgba(88,166,255,0.12) !important; color: var(--accent) !important; }
-  .cell-hi2 { background: rgba(63,185,80,0.12) !important; color: var(--green) !important; }
-  .cell-lo { background: rgba(248,81,73,0.1) !important; color: var(--red) !important; }
-  .cell-dom { background: rgba(210,153,34,0.1) !important; color: var(--gold2) !important; }
-  .cell-str { background: rgba(188,140,255,0.1) !important; color: var(--purple) !important; }
-
-  .formula-block {
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    border-left: 3px solid var(--accent);
-    border-radius: 0 8px 8px 0;
-    padding: 1rem 1.25rem;
-    margin: 1rem 0;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 14px;
-    color: var(--cyan);
-    line-height: 1.9;
-  }
-  .formula-block .comment { color: var(--text3); }
-  .formula-block .val { color: var(--gold2); font-weight: 600; }
-  .formula-block .eq { color: var(--green); }
-
-  .result-row {
-    display: flex; gap: 12px; flex-wrap: wrap; margin: 1.2rem 0;
-  }
-  .result-card {
-    flex: 1; min-width: 120px;
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 1rem;
-    text-align: center;
-  }
-  .result-card .rc-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    color: var(--text3);
-    margin-bottom: 6px;
-  }
-  .result-card .rc-val {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 22px;
-    font-weight: 600;
-  }
-
-  .info-box {
-    border-radius: 8px;
-    padding: 1rem 1.25rem;
-    font-size: 14px;
-    line-height: 1.7;
-    margin: 1rem 0;
-  }
-  .info-blue { background: rgba(88,166,255,0.07); border: 1px solid rgba(88,166,255,0.2); color: var(--text2); }
-  .info-gold { background: rgba(210,153,34,0.07); border: 1px solid rgba(210,153,34,0.25); color: var(--gold2); }
-
-  .chart-wrap { position: relative; width: 100%; height: 360px; margin: 1.25rem 0; }
-.verdict {
-    border-radius: 10px;
-    padding: 1.25rem 1.5rem;
-    margin-top: 1.5rem;
-    border: 1px solid;
-    font-size: 14px;
-    line-height: 1.8;
-  }
-  .verdict-win { background: rgba(63,185,80,0.07); border-color: rgba(63,185,80,0.25); }
-  .verdict-loss { background: rgba(248,81,73,0.07); border-color: rgba(248,81,73,0.25); }
-
-  .footnote { font-size: 12px; color: var(--text3); margin-top: 0.75rem; font-style: italic; }
-  .sep { height: 1px; background: var(--border); margin: 1.5rem 0; }
-
-  @media (max-width: 600px) {
-    .header h1 { font-size: 1.5rem; }
-    .players-grid { grid-template-columns: 1fr; }
-    .result-row { flex-direction: column; }
-    .chart-wrap { height: 280px; }
-  }
-</style>
-</head>
-<body>
-
-<div class="header">
-  <div class="header-tag">Б24-517 · Вариант 47 · Теория игр</div>
-  <h1>Облачные HPC-ресурсы</h1>
-  <p>Двухстратегная игра провайдера с трёхсценарной нагрузкой клиентов. Анализ оптимальных смешанных стратегий и цены игры.</p>
-  <div class="badge-row">
-    <span class="badge badge-blue">2 стратегии Игрока А</span>
-    <span class="badge badge-gold">3 сценария Игрока Б</span>
-    <span class="badge badge-green">Смешанные стратегии</span>
-  </div>
-</div>
-
-<nav class="nav">
-  <button class="nav-btn active" onclick="switchTab(0)"><span class="step-num">1</span> Матрица</button>
-  <button class="nav-btn" onclick="switchTab(1)"><span class="step-num">2</span> Доминирование</button>
-  <button class="nav-btn" onclick="switchTab(2)"><span class="step-num">3</span> Седловая точка</button>
-  <button class="nav-btn" onclick="switchTab(3)"><span class="step-num">4</span> Графоаналитический</button>
-  <button class="nav-btn" onclick="switchTab(4)"><span class="step-num">5</span> Симплекс + Б–Р</button>
-</nav>
-
-<div class="content">
-
-<!-- SECTION 1: MATRIX -->
-<div class="section active" id="sec0">
-  <div class="section-title"><span class="num">01</span> Вербальная постановка и матрица игры</div>
-  <div class="section-sub">Идентификация игроков, стратегий и построение матрицы выигрышей провайдера (у.е. маржи).</div>
-
-  <div class="players-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1.25rem 0;">
-    <div class="player-card" style="border-radius:10px;padding:1.2rem;border:1px solid rgba(88,166,255,0.2);background:rgba(88,166,255,0.06);">
-      <div style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.5rem;color:var(--accent);">Игрок А — Провайдер</div>
-      <h3 style="font-size:15px;margin-bottom:0.5rem;">Облачная HPC-платформа</h3>
-      <ul style="list-style:none;font-size:13px;color:var(--text2);line-height:1.8;">
-        <li><b>S₁</b> — Зарезервированный пакетный пул (batch)</li>
-        <li><b>S₂</b> — Динамический потоковый пул (streaming)</li>
-      </ul>
-    </div>
-    <div class="player-card" style="border-radius:10px;padding:1.2rem;border:1px solid rgba(247,129,102,0.2);background:rgba(247,129,102,0.06);">
-      <div style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.5rem;color:#f78166;">Игрок Б — Клиентская нагрузка</div>
-      <h3 style="font-size:15px;margin-bottom:0.5rem;">Исследовательские группы</h3>
-      <ul style="list-style:none;font-size:13px;color:var(--text2);line-height:1.8;">
-        <li><b>L₁</b> — Равномерная нагрузка</li>
-        <li><b>L₂</b> — Пиковая нагрузка</li>
-        <li><b>L₃</b> — Ночная нагрузка автоматических пайплайнов</li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-title">Матрица выигрышей Игрока А (маржа в у.е.)</div>
-    <table class="matrix">
-      <thead>
-        <tr>
-          <th></th>
-          <th>L₁ Равномерная</th>
-          <th>L₂ Пиковая</th>
+```
