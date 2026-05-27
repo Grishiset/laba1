@@ -283,6 +283,22 @@
   .footnote { font-size: 12px; color: var(--text3); margin-top: 0.75rem; font-style: italic; }
   .sep { height: 1px; background: var(--border); margin: 1.5rem 0; }
 
+  /* Новый блок для теоретических пояснений */
+  .theory-note {
+    background: rgba(118, 227, 234, 0.04);
+    border: 1px dashed rgba(118, 227, 234, 0.25);
+    border-radius: 8px;
+    padding: 0.9rem 1.2rem;
+    margin: 1rem 0;
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.7;
+  }
+  .theory-note strong {
+    color: var(--cyan);
+    font-weight: 600;
+  }
+
   @media (max-width: 600px) {
     .header h1 { font-size: 1.5rem; }
     .players-grid { grid-template-columns: 1fr; }
@@ -302,6 +318,9 @@
     <span class="badge badge-gold">3 сценария Игрока Б</span>
     <span class="badge badge-green">Смешанные стратегии</span>
   </div>
+  <p style="margin-top:1.2rem;font-size:0.85rem;color:var(--text2);max-width:700px;">
+    💡 <em>Теория игр</em> — математический аппарат для анализа конфликтных ситуаций, где результат зависит от решений нескольких сторон. В этой антагонистической игре одна сторона (провайдер) максимизирует маржу, а другая (нагрузка) рассматривается как противник, минимизирующий её.
+  </p>
 </div>
 
 <nav class="nav">
@@ -365,6 +384,9 @@
         </tr>
       </tbody>
     </table>
+    <p style="margin-top:0.8rem;font-size:0.85rem;color:var(--text3);">
+      Матричная игра — это модель, где каждая ячейка показывает выигрыш первого игрока при фиксированной паре чистых стратегий. Второй игрок стремится этот выигрыш минимизировать.
+    </p>
   </div>
 
   <div class="card">
@@ -388,6 +410,9 @@
   <div class="card">
     <div class="card-title">Сокращение матрицы</div>
     <p style="margin-bottom:1rem;color:var(--text2);">Стратегия L₃ строго доминирует L₁ для Игрока Б (11&lt;15 и 23&lt;27). L₁ исключается.</p>
+    <div class="theory-note">
+      <strong>Доминирование</strong> — одна стратегия строго доминирует другую, если при всех возможных ответах соперника даёт лучший (для данного игрока) результат. Здесь L₃ всегда даёт меньший выигрыш провайдеру, то есть лучший для Б. Поэтому рациональный Б никогда не выберет L₁.
+    </div>
     <table class="matrix">
       <thead><tr><th></th><th>L₂ Пиковая</th><th>L₃ Ночная</th></tr></thead>
       <tbody>
@@ -409,6 +434,9 @@
       minimax = 23<br><br>
       <span style="color:var(--gold2)">Седловая точка отсутствует (11 ≠ 23). Решение существует только в смешанных стратегиях.</span>
     </div>
+    <div class="theory-note">
+      <strong>Седловая точка</strong> в матричной игре — элемент, который является одновременно максимумом в своём столбце и минимумом в своей строке. Если такой существует, чистые стратегии оптимальны и цена игры равна этому элементу. Здесь её нет: гарантированный выигрыш А (maximin) 11, а гарантированный проигрыш Б (minimax) 23.
+    </div>
   </div>
 </div>
 
@@ -425,6 +453,9 @@
       (1–q*) (L₃) = <strong>5/8 = 0.625</strong><br><br>
       Цена игры <strong>v = 18.5</strong> у.е.
     </div>
+    <div class="theory-note">
+      <strong>Смешанная стратегия</strong> — вероятностный выбор чистых стратегий. Игрок А выбирает S₁ с вероятностью p, S₂ с вероятностью 1−p. Ожидаемый платёж — линейная функция от p. Нижняя огибающая этих прямых даёт гарантированный выигрыш при фиксированном p. Максимум этой огибающей (в точке пересечения) даёт оптимальное p*.
+    </div>
   </div>
 
   <div class="card">
@@ -432,6 +463,9 @@
     <div class="chart-wrap">
       <canvas id="graphChart"></canvas>
     </div>
+    <p style="font-size:0.8rem;color:var(--text3);margin-top:0.5rem;">
+      Прямые: E(p, L₂) = 11 + 20p и E(p, L₃) = 23 − 12p. Пересечение при p=0.375 даёт v=18.5.
+    </p>
   </div>
 </div>
 
@@ -452,6 +486,9 @@
         <tr><td>Браун–Робинсон</td><td style="color:var(--text2)">сходится к 0.375</td><td style="color:var(--text2)">сходится к 0.625</td><td style="color:var(--text2)">0.375</td><td style="color:var(--text2)">0.625</td><td style="color:var(--text2)">18.5</td></tr>
       </tbody>
     </table>
+    <div class="theory-note" style="margin-top:1rem;">
+      <strong>Симплекс-метод</strong> решает матричную игру как задачу линейного программирования: максимизировать v при ограничениях, что ожидаемый выигрыш не меньше v для любой стратегии противника. <strong>Метод Брауна–Робинсона</strong> — итеративный алгоритм фиктивного разыгрывания: на каждом шаге игроки выбирают наилучший ответ на историю ходов соперника, и оценки цены игры сходятся к точному значению.
+    </div>
   </div>
 
   <div class="card">
@@ -463,6 +500,9 @@
     <div class="chart-wrap" id="br-chart-wrap" style="display:none;">
       <canvas id="brChart"></canvas>
     </div>
+    <p style="font-size:0.8rem;color:var(--text3);margin-top:0.5rem;">
+      Красная линия — v<sub>min</sub> (оценка снизу), зелёная — v<sub>max</sub> (оценка сверху), пунктир — точное значение v=18.5. С ростом итераций они сближаются.
+    </p>
   </div>
 </div>
 
